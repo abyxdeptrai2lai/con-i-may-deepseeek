@@ -1,4 +1,4 @@
-package com.github.yourusernamehere
+package com.github.yournamehere
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -35,6 +35,7 @@ class MyFirstKotlinPlugin : Plugin() {
             val parent = input.parent as? ViewGroup ?: return@after
             chatInputRef = input
 
+            // Nút Paste (nằm cạnh dấu +)
             val pasteBtn = ImageButton(context).apply {
                 setImageResource(android.R.drawable.ic_menu_edit)
                 setBackgroundColor(android.graphics.Color.TRANSPARENT)
@@ -52,6 +53,7 @@ class MyFirstKotlinPlugin : Plugin() {
             }
             parent.addView(pasteBtn, 1)
 
+            // Tự động chèn Prefix khi khung chat trống
             input.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -68,14 +70,20 @@ class MyFirstKotlinPlugin : Plugin() {
             })
         }
 
+        // Tạo nút Spam nổi
         if (context is android.app.Activity) {
             val rootView = context.window.decorView as ViewGroup
+            
             val spamBtn = ImageButton(context).apply {
                 setImageResource(android.R.drawable.ic_menu_sort_by_size)
                 setBackgroundColor(android.graphics.Color.parseColor("#55FF5555"))
                 setPadding(25, 25, 25, 25)
             }
-            val params = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
+            
+            val params = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            )
             params.gravity = Gravity.TOP or Gravity.START
             params.leftMargin = 200
             params.topMargin = 400
@@ -152,7 +160,7 @@ class MyFirstKotlinPlugin : Plugin() {
         scrollView.addView(layout)
 
         val delayInput = EditText(context).apply {
-            hint = "1. Delay (ms)"
+            hint = "1. Delay (ms) - vd: 1000"
             inputType = android.text.InputType.TYPE_CLASS_NUMBER
         }
         layout.addView(delayInput)
@@ -168,6 +176,7 @@ class MyFirstKotlinPlugin : Plugin() {
         val tagPosGroup = RadioGroup(context).apply { orientation = RadioGroup.HORIZONTAL }
         val tagPosOptions = arrayOf("Đầu", "Giữa", "Cuối", "Random", "Cả 2", "Cả 3")
         for (i in tagPosOptions.indices) {
+            // ĐÃ SỬA LỖI ID BẰNG setId()
             val rb = RadioButton(context).apply { text = tagPosOptions[i]; setId(i + 100) }
             tagPosGroup.addView(rb)
         }
@@ -178,6 +187,7 @@ class MyFirstKotlinPlugin : Plugin() {
         val msgPosGroup = RadioGroup(context)
         val msgPosOptions = arrayOf("Đầu - Cuối", "Cuối - Đầu", "Random", "Full (CopyPaste)")
         for (i in msgPosOptions.indices) {
+            // ĐÃ SỬA LỖI ID BẰNG setId()
             val rb = RadioButton(context).apply { text = msgPosOptions[i]; setId(i + 200) }
             msgPosGroup.addView(rb)
         }
@@ -361,6 +371,9 @@ class MyFirstKotlinPlugin : Plugin() {
 
         dialog.setView(rootLayout)
         dialog.show()
-        dialog.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
     }
 }
